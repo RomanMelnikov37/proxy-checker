@@ -22,12 +22,13 @@ class ProxyCheckController extends Controller
     public function check(Request $request): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $proxies = explode("\n", trim($request->input('proxies')));
-        $results = $this->service->check($proxies);
+        $data = $this->service->check($proxies);
 
         return view('proxy_check.result', [
-            'results' => $results,
-            'total'   => count($results),
-            'working' => count(array_filter($results, fn($r) => $r['is_working'])),
+            'results' => $data['proxies'],
+            'total'   => $data['result']->total_proxies,
+            'working' => $data['result']->working_proxies,
+            'duration' => $data['result']->duration,
         ]);
     }
 }
