@@ -18,6 +18,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="/">Проверка прокси</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/history">История проверок</a>
+            </li>
         </ul>
     </div>
 </nav>
