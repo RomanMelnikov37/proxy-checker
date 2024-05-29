@@ -5,19 +5,19 @@ namespace App\Services;
 use App\Models\ProxyCheck;
 use App\Models\ProxyCheckResult;
 use GuzzleHttp\Client;
-use GuzzleHttp\Promise;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Promise;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\TransferStats;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Carbon;
 use Psr\Http\Message\ResponseInterface;
 
 class ProxyCheckService
 {
     private array $verifiedProxies = [];
     private float $startTime;
+    const TIMEOUT = 30;
 
     public function __construct(private readonly Client $client)
     {
@@ -49,7 +49,7 @@ class ProxyCheckService
     {
         return $this->client->getAsync('http://ip-api.com/json', [
             'proxy'    => "$protocol://$proxy",
-            'timeout'  => 30,
+            'timeout'  => self::TIMEOUT,
             'on_stats' => function (TransferStats $stats) use (&$results, $proxy, $protocol) {
                 $result = [
                     'ip'          => explode(':', $proxy)[0],
@@ -58,7 +58,7 @@ class ProxyCheckService
                     'country'     => null,
                     'city'        => null,
                     'is_working'  => false,
-                    'speed'       => null,
+                    'speed'       => self::TIMEOUT * 1000,
                     'external_ip' => null,
                 ];
 
