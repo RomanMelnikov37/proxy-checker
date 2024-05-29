@@ -15,3 +15,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [ProxyCheckController::class, 'index']);
+Route::post('/check', [ProxyCheckController::class, 'check']);
